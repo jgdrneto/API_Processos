@@ -11,4 +11,4 @@ API que fornece informações sobre processos.
 
 ## **Importação:**
 
-* Para utilizar a API basta importar os arquivos do repositório para a pasta do seu projeto e adicionar para importação: ** #include "API_Processos.cpp" ** .
+* Para utilizar a API basta importar os arquivos do repositório para a pasta do seu projeto e adicionar para importação: * #include "API_Processos.cpp" * .
