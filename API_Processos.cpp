@@ -23,6 +23,10 @@
 #define USUARIO "Uid:"
 #define MEMORIA "VmData:"
 #define MEMSWAP "VmSwap:"
+#define MJFAULTS "MjFaults:"
+#define MIFAULTS "MiFaults:"
+#define MJFAULTSNUMBER 11
+#define MIFAULTSNUMBER 9
 
 class API_Processos{
 private:
@@ -60,20 +64,6 @@ private:
     //Retornando um vetor de string onde cada string é uma linha do resultado(no terminal) do comando system();
     return linhas;
 
-  }
-
-  /*  Descrição: Obter o comando para ter todos os ids dos processos
-   *
-   *  return string : Comando que retorna o id de todos os processos
-   */
-  static string obterComStringProcessos(){
-
-    //String capaz de se fazer concatenação
-    stringstream ss;
-    //Concatenando string para gerar o comando
-    ss << "ls /proc | grep \"^[0-9]\"";
-    //Atribuindo o valor da concatenação em uma string
-    return ss.str();
   }
 
   /*  Descrição: Obter o comando para ter as informações de um determinado processo
@@ -131,7 +121,7 @@ private:
    *  
    *  @return vector<string> : Vetor com as informações interpretadas 
    */
-  static map<string,string> obterAtributos(vector<string> informacoes){
+  static map<string,string> obterAtributosChaveValor(vector<string> informacoes){
     
     //Vetor com as inforamções relevantes
     map<string,string> atributos;
@@ -152,6 +142,44 @@ private:
       }
 
     }
+
+    return atributos;
+  }
+
+  /*  Descrição : Obteem os atributos relevantes das informações  
+   *
+   *  @param vector<string> : Vetor com as informações brutas
+   *  
+   *  @return vector<string> : Vetor com as informações interpretadas 
+   */
+  static map<string,string> obterAtributosValor(vector<string> informacoes){
+    
+    //Vetor com as inforamções relevantes
+    map<string,string> atributos;
+    vector<string> lexemas;
+    vector<string> temp;
+
+
+    //Interando entre todas as linhas do vetor das informações
+    for(string s : informacoes){
+
+      temp = split(s);
+
+      //Quebrando as informações
+      lexemas.insert(lexemas.end(),temp.begin(),temp.end());
+
+    }
+    
+    /* 
+    for(string s : lexemas){
+      cout << s << endl;
+    }
+
+    cout << "====================================" << endl;
+    */
+      
+    atributos[MIFAULTS] = lexemas[9];
+    atributos[MJFAULTS] = lexemas[11];  
 
     return atributos;
   }
@@ -190,13 +218,13 @@ private:
    *
    *  @return vector<string> : Obter infomrações do processo
    */
-  static vector<string> obterinformacoesProcesso(string processo){
+  static vector<string> obterinformacoesProcesso(string processo,string nomeArquivo){
     vector<string> linhas;
     
     string linha; 
     ifstream file;
     
-    file.open("/proc/"+processo+"/status");
+    file.open("/proc/"+processo+"/"+nomeArquivo);
     
     if (file.is_open()){
       
@@ -229,20 +257,23 @@ private:
     resultado.push_back(*(new Processo(0,"OS",-1,-1, (unsigned int)0)));
 
     //Obtendo os id de todos os processos  
-    vector<string> processosString = verificarIntegridade(obterStringsDoComando(obterComStringProcessos()));  
+    vector<string> processosString = verificarIntegridade(obterStringsDoComando("ls /proc | grep \"^[0-9]\""));  
 
     //Iterando entre todos os ids encontrados
     for(string p : processosString){
       
       //Obter inforamções do processo  
-      vector<string> informacoes = obterinformacoesProcesso(p);
+      vector<string> informacoesStatus = obterinformacoesProcesso(p,"status");
+      vector<string> informacoesStat = obterinformacoesProcesso(p,"stat");
 
       //Se existir informações sobre ele adiciona-o para o vetor resultante
-      if(!informacoes.empty()){
+      if(!informacoesStatus.empty() && !informacoesStatus.empty()){
 
         //Obter os atributos relevantes
-        map<string,string> atributos = obterAtributos(informacoes);
-
+        map<string,string> atributosStatus = obterAtributosChaveValor(informacoesStatus);
+        
+        map<string,string> atributosStat = obterAtributosValor(informacoesStat);
+        
         Processo* proc = new Processo(std::stoi(p,nullptr,0));
         
         /*
@@ -254,22 +285,26 @@ private:
         cout << "SWAP: " << atributos[MEMSWAP] << endl;
         */
 
-        if(!atributos[NAME].empty()){
-          proc->setNome(atributos[NAME]);
+        if(!atributosStatus[NAME].empty()){
+          proc->setNome(atributosStatus[NAME]);
         }
-        if(!atributos[PAI].empty()){
-          proc->setPai(std::stoi(atributos[PAI],nullptr,0));
+        if(!atributosStatus[PAI].empty()){
+          proc->setPai(std::stoi(atributosStatus[PAI],nullptr,0));
         }
-        if(!atributos[USUARIO].empty()){
-          proc->setUsuario(std::stoi(atributos[USUARIO],nullptr,0));
+        if(!atributosStatus[USUARIO].empty()){
+          proc->setUsuario(std::stoi(atributosStatus[USUARIO],nullptr,0));
         }
-        if(!atributos[MEMORIA].empty()){
-          proc->setMemoria((unsigned int)std::stoi(atributos[MEMORIA],nullptr,0));
+        if(!atributosStatus[MEMORIA].empty()){
+          proc->setMemoria((unsigned int)std::stoi(atributosStatus[MEMORIA],nullptr,0));
         }
-        if(!atributos[MEMSWAP].empty()){
-          proc->setSwap(std::stoi(atributos[MEMSWAP],nullptr,0));
+        if(!atributosStatus[MEMSWAP].empty()){
+          proc->setSwap(std::stoi(atributosStatus[MEMSWAP],nullptr,0));
         }
-           
+        
+        //Informação de falta de páginas
+        proc->setMifaults(std::stoi(atributosStat[MIFAULTS],nullptr,0));  
+        proc->setMjfaults(std::stoi(atributosStat[MJFAULTS],nullptr,0));
+        
         resultado.push_back(*proc);
       }
     }   

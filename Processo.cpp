@@ -17,6 +17,8 @@ class Processo{
   	int pai;
     unsigned int memoria;
     int swap;
+    int mjfaults;
+    int mifaults;
 
   public:
 
@@ -24,6 +26,10 @@ class Processo{
 
   	Processo(int nId){
   		this->id = nId;
+      this->memoria=0;
+      this->swap = 0;
+      this->mjfaults=0;
+      this->mifaults=0;
   	}
 
     Processo(int nId,string nNome, int nUsuario, int nPai, unsigned int nMemoria){
@@ -33,6 +39,8 @@ class Processo{
       this->pai = nPai;
       this->memoria = nMemoria;
       this->swap = 0;
+      this->mjfaults=0;
+      this->mifaults=0;
     }
 
     /*  Descrição : Obter o id do processo
@@ -91,6 +99,21 @@ class Processo{
       return this->usuario;
     }
 
+    /*  Descrição : Obter o valor de major faults do processo
+     *
+     *  @return int : Valor de major faults do processo
+     */
+    int getMjfaults() {
+      return this->mjfaults;
+    }
+
+    /*  Descrição : Obter o valor de minor faults do processo
+     *
+     *  @return int : Valor de minor faults do processo
+     */
+    int getMifaults() {
+      return this->mifaults;
+    }
 
     /*  Descrição : Adicionar novo pai para o processo
      *
@@ -140,6 +163,22 @@ class Processo{
   		this->usuario = nUsuario;
   	}
 
+    /*  Descrição : Adicionar novo valor de minor faults para o processo
+     *
+     *  @param int : Novo valor de minor faults do processo
+     */ 
+    void setMifaults(int nMifaults){
+      this->mifaults = nMifaults;
+    }
+
+    /*  Descrição : Adicionar novo valor de major faults para o processo
+     *
+     *  @param int : Novo valor de major faults do processo
+     */ 
+    void setMjfaults(int nMjfaults){
+      this->mjfaults = nMjfaults;
+    }
+
     string toString(){
 
       stringstream ss;
@@ -150,8 +189,10 @@ class Processo{
             "Pai: " << this->pai << "\n" <<
             "Memória: " << this->memoria << "\n" << 
             "Swap: " << this->swap << "\n" <<
-            "Quantidade de filhos: " << this->filhos.size();
-
+            "Quantidade de filhos: " << this->filhos.size() << "\n" <<
+            "Minor Faults: " << this->mifaults << "\n"  <<
+            "Major Faults: " << this->mjfaults << "\n"; 
+            
       return ss.str();        
     }
 
