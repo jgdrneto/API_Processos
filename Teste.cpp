@@ -1,24 +1,14 @@
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include <stdlib.h>
-#include <unistd.h>
 
-#include "API_Processos.cpp"
+#include "includes/API_Processos.h"
 
 using namespace std;
 
 int main(int argc, char const *argv[]){	
 	
-	vector<Processo> processos = API_Processos::obterProcessos();
+	API_Processos proc;
 	
-	for(Processo p : processos){
+	std::cout << proc.getProcessos()[3].toString() << std::endl;
 
-		cout << "=============================================" << endl;
-
-		cout << p.toString() << endl;
-
-		cout << "=============================================" << endl;
-	}
-	
+	return 0;
 }	
