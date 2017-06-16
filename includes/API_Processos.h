@@ -11,9 +11,9 @@
 #include <unistd.h>
 #include <map>
 
-#include "../src/Constantes.cpp"		//Arquivo com constantes
-#include "json.hpp"						//Arquivo para manipulação com JSON
-#include "Processo.h"					//Arquivo com as classe de Processo 
+#include "../src/Constantes.cpp"	 //Arquivo com constantes
+#include "json.hpp"						     //Arquivo para manipulação com JSON
+#include "Processo.h"					     //Arquivo com as classe de Processo 
 
 //Classe da API de processos
 class API_Processos{
@@ -39,8 +39,6 @@ private:
   	std::string obterComInformacaoProcesso(std::string);
 
   	/*  Descrição 					: Construir a árvore
-     *  
-     *  @param vector<Processo>& 	: Endereço de vetor de processos de todos os processos
      */
   	void construirArvore();
 

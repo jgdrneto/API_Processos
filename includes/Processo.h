@@ -34,7 +34,7 @@ private:
     unsigned int threads;                    //Quantidade de threads do processo
     unsigned long int numSinPend;            //Quantidade de sinais pendentes no processo
     int prioridade;                          //Prioridade do processo
-    unsigned long long int tempoDeInic; //Tempo de inicio, em segundos, do processo após o boot
+    unsigned long long int tempoDeInic;      //Tempo de inicio, em segundos, do processo após o boot
 public:
     
 //===========================================================================
