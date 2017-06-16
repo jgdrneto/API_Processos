@@ -1,3 +1,5 @@
+#ifndef _CONSTANTES_
+#define _CONSTANTES_
 
 //Arquivo reservado para definição de constantes
 
@@ -10,3 +12,16 @@
 #define MIFAULTS "MiFaults:"
 #define MJFAULTSNUMBER 11
 #define MIFAULTSNUMBER 9
+
+enum ESTADO	
+{
+	RUNNING,
+	SLEEPING,
+	DISK_SLEPP,
+	STOPPED,
+	TRACING_STOP,
+	ZOMBIE,
+	DEAD
+};
+
+#endif

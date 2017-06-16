@@ -1,9 +1,9 @@
 Processo::Processo(){/*NULO*/}
 
 Processo::Processo(int nId){
-  	this->id = nId;
+    this->id = nId;
     this->memoria=0;
-    this->swap = 0;
+    this->memSwap = 0;
     this->mjfaults=0;
     this->mifaults=0;
 }
@@ -14,13 +14,13 @@ Processo::Processo(int nId,std::string nNome, int nUsuario, int nPai, unsigned i
     this->usuario = nUsuario;
     this->pai = nPai;
     this->memoria = nMemoria;
-    this->swap = 0;
+    this->memSwap = 0;
     this->mjfaults=0;
     this->mifaults=0;
 }
 
 int Processo::getId(){
-	  return this->id;	
+    return this->id;  
 }
 
 unsigned int Processo::getMemoria(){
@@ -31,27 +31,27 @@ int Processo::getPai(){
     return this->pai;
 }
 
-int Processo::getSwap(){
-    return this->swap;
+unsigned int Processo::getMemSwap(){
+    return this->memSwap;
 }
 
 std::string Processo::getNome(){
-  	return this->nome;
+    return this->nome;
 }
 
 std::vector<Processo*>* Processo::getFilhos(){
-  	return &(this->filhos);
+    return &(this->filhos);
 }
 
 int Processo::getUsuario() {
     return this->usuario;
 }
 
-int Processo::getMjfaults() {
+unsigned int Processo::getMjfaults() {
     return this->mjfaults;
 }
 
-int Processo::getMifaults() {
+unsigned int Processo::getMifaults() {
     return this->mifaults;
 }
 
@@ -59,8 +59,8 @@ void Processo::setPai(int nPai){
     this->pai = nPai;
 }
 
-void Processo::setSwap(int nSwap){
-    this->swap = nSwap;
+void Processo::setMemSwap(unsigned int nMemSwap){
+    this->memSwap = nMemSwap;
 }
 
 void Processo::setMemoria(unsigned int nMemoria){
@@ -68,22 +68,22 @@ void Processo::setMemoria(unsigned int nMemoria){
 }
 
 void Processo::setId(int nId){
-  	this->id = nId;
+    this->id = nId;
 }
 
 void Processo::setNome(std::string nNome){
-  	this->nome = nNome;
+    this->nome = nNome;
 }
 
 void Processo::setUsuario(int nUsuario){
-  	this->usuario = nUsuario;
+    this->usuario = nUsuario;
 }
 
-void Processo::setMifaults(int nMifaults){
+void Processo::setMifaults(unsigned int nMifaults){
     this->mifaults = nMifaults;
 }
 
-void Processo::setMjfaults(int nMjfaults){
+void Processo::setMjfaults(unsigned int nMjfaults){
     this->mjfaults = nMjfaults;
 }
 
@@ -96,7 +96,7 @@ std::string Processo::toString(){
           "Usuario: " << this->usuario << "\n" << 
           "Pai: " << this->pai << "\n" <<
           "Memória: " << this->memoria << "\n" << 
-          "Swap: " << this->swap << "\n" <<
+          "Swap: " << this->memSwap << "\n" <<
           "Quantidade de filhos: " << this->filhos.size() << "\n" <<
           "Minor Faults: " << this->mifaults << "\n"  <<
           "Major Faults: " << this->mjfaults << "\n"; 

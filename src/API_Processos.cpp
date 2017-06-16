@@ -199,12 +199,12 @@ std::vector<Processo> API_Processos::construirProcessos(){
                 proc->setMemoria((unsigned int)std::stoi(atributosStatus[MEMORIA],nullptr,0));
             }
             if(!atributosStatus[MEMSWAP].empty()){
-                proc->setSwap(std::stoi(atributosStatus[MEMSWAP],nullptr,0));
+                proc->setMemSwap((unsigned int)std::stoi(atributosStatus[MEMSWAP],nullptr,0));
             }
             
             //Informação de falta de páginas
-            proc->setMifaults(std::stoi(atributosStat[MIFAULTS],nullptr,0));  
-            proc->setMjfaults(std::stoi(atributosStat[MJFAULTS],nullptr,0));
+            proc->setMifaults((unsigned int)std::stoi(atributosStat[MIFAULTS],nullptr,0));  
+            proc->setMjfaults((unsigned int)std::stoi(atributosStat[MJFAULTS],nullptr,0));
             
             resultado.push_back(*proc);
         }
@@ -279,7 +279,7 @@ void API_Processos::salvarArvore(){
       //Ecluindo o processo Odin(pai de todos)
       if(p.getId()!=0){    
         //Salvar as informações no fim do arquivo json 
-        j.push_back(nlohmann::json{{"ID", p.getId()}, {"Nome", p.getNome()}, {"Pai", p.getPai()},{"Usuário", p.getUsuario()},{"Memória Utilizada", p.getMemoria()},{"Memória em SWAP", p.getSwap()}});
+        j.push_back(nlohmann::json{{"ID", p.getId()}, {"Nome", p.getNome()}, {"Pai", p.getPai()},{"Usuário", p.getUsuario()},{"Memória Utilizada", p.getMemoria()},{"Memória em SWAP", p.getMemSwap()}});
       }
     }
     
