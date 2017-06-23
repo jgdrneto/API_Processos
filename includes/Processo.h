@@ -18,7 +18,7 @@ private:
   	int usuario;                             //ID do Usuário do processo
   	int pai;                                 //ID do pai do processo
     unsigned int memoria;                    //Quantidade de memória virtual utilizada
-    unsigned int menPico;                    //Quantidade pico de memória virtual utilizada
+    unsigned int memPico;                    //Quantidade pico de memória virtual utilizada
     unsigned int memDados;                   //Quantidade de memória sendo utilizada para dados
     unsigned int memPilha;                   //Quantidade de memória sendo utilizada para pilha
     unsigned int memSegText;                 //Quantidade de memória sendo utilizada para segmentos de texto
@@ -34,7 +34,7 @@ private:
     unsigned int threads;                    //Quantidade de threads do processo
     unsigned long int numSinPend;            //Quantidade de sinais pendentes no processo
     int prioridade;                          //Prioridade do processo
-    unsigned long long int tempoDeInic;      //Tempo de inicio, em segundos, do processo após o boot
+    unsigned long long int tempDeInic;       //Tempo de inicio, em segundos, do processo após o boot
 public:
     
 //===========================================================================
@@ -205,7 +205,7 @@ public:
      *
      *  @return unsigned long long int : Tempo em segundos
      */
-    unsigned long long int getTempInic();
+    unsigned long long int getTempDeInic();
 
 //===========================================================================
 
@@ -283,7 +283,7 @@ public:
      *
      *  @param unsigned int : Novo valor para o tamanho da tabela de páginas de segundo nível
      */  
-    void setSegTabPag(unsigned int);
+    void setTamSegTabPag(unsigned int);
 
     /*  Descrição           : Adicionar novo valor de major faults para o processo
      *
@@ -301,7 +301,7 @@ public:
      *
      *  @param unsigned int : Nova lista de cpus permitidas
      */ 
-    std::vector<unsigned int> setCpusPermitidas(std::vector<unsigned int>);    
+    void setCpusPermitidas(std::vector<unsigned int>);    
 
     /*  Descrição     : Adicionar ESTADO para o processo
      *
@@ -309,27 +309,27 @@ public:
      */  
     void setESTADO(ESTADO);
 
-    /*  Descrição   : Adicionar quantidade de trocas de contexto voluntárias no processo
+    /*  Descrição           : Adicionar quantidade de trocas de contexto voluntárias no processo
      *
-     *  @param int  : Nova quantidade de trocas de contexto voluntárias
+     *  @param unsigned int : Nova quantidade de trocas de contexto voluntárias
      */  
-    void setTrocaContVol(int);
+    void setTrocaContVol(unsigned int);
 
-    /*  Descrição   : Adicionar quantidade de trocas de contexto forçadas no processo
+    /*  Descrição           : Adicionar quantidade de trocas de contexto forçadas no processo
      *
-     *  @param int  : Nova quantidade de trocas de contexto forçadas
+     *  @param unsigned int : Nova quantidade de trocas de contexto forçadas
      */  
-    void setTrocaContFor(int);    
+    void setTrocaContFor(unsigned int);    
 
-    /*  Descrição   : Adicionar quantidade de threads no processo
+    /*  Descrição           : Adicionar quantidade de threads no processo
      *
-     *  @param int  : Nova quantidade de threads
+     *  @param unsigned int : Nova quantidade de threads
      */  
-    void setThreads(int); 
+    void setThreads(unsigned int); 
 
-    /*  Descrição   : Adicionar quantidade de sinais pendentes no processo
+    /*  Descrição           : Adicionar quantidade de sinais pendentes no processo
      *
-     *  @param int  : Nova quantidade de sinais pendentes do processo
+     *  @param unsigned int : Nova quantidade de sinais pendentes do processo
      */  
     void setNumSinPend(unsigned long int); 
 
@@ -337,13 +337,13 @@ public:
      *
      *  @param int  : Novo valor de prioridade do processo
      */  
-    void setPrioridade(unsigned long int); 
+    void setPrioridade(int); 
 
     /*  Descrição                     : Adicionar novo tempo de inicio do processo em relação ao boot
      *
      *  @param unsigned long long int : Novo valor de tempo de inicio
      */  
-    void setTempDeInicio(unsigned long long int); 
+    void setTempDeInic(unsigned long long int); 
 
 //===========================================================================
 
