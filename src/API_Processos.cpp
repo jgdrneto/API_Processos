@@ -212,11 +212,55 @@ std::vector<Processo> API_Processos::construirProcessos(){
     return resultado;
 }
 
+bool API_Processos::contemUsuario(std::vector<int> usuarios,int s){
+
+    for(int u : usuarios){
+        if(u==s){
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string API_Processos::obterNomeArqTemp(std::string nomeDoArquivo){
+    
+    std::ifstream obj;
+
+    int ponto = nomeDoArquivo.find_last_of(".");    
+    std::string nome = nomeDoArquivo.substr(0,ponto);
+    std::string extensao = nomeDoArquivo.substr(ponto,nomeDoArquivo.size()-1);
+
+    bool existeArquivo=true;
+
+    while(existeArquivo){
+
+        obj.open((nome + extensao));
+    
+        existeArquivo = obj.is_open();
+
+        if(existeArquivo==true){
+            nome=(nome+"t");
+        }
+
+        obj.close();
+    }
+
+    return (nome+extensao);   
+}
+
 API_Processos::API_Processos(){
     this->arquivoTemp = obterNomeArqTemp("temp.txt");
 
     processos = construirProcessos();
     construirArvore(); 
+}
+
+API_Processos::~API_Processos(){
+    remove(arquivoTemp.c_str());
+}
+
+void imprimirSubArvore(Processo& processo){
+
 }
 
 Processo& API_Processos::buscaPorID(int id){
@@ -226,17 +270,8 @@ Processo& API_Processos::buscaPorID(int id){
             return this->processos[i];
         } 
     }
+
     return *(new Processo(-1,"erro", -1, -1, (unsigned int)0));
-}
-
-bool API_Processos::contemUsuario(std::vector<int> usuarios,int s){
-
-    for(int u : usuarios){
-        if(u==s){
-            return true;
-        }
-    }
-    return false;
 }
 
 std::vector<int> API_Processos::obterUsuarios(){
@@ -269,7 +304,7 @@ int API_Processos::quantidadeProcessosDoUsuario(int usuario){
     return cont;
 }
 
-void API_Processos::salvarArvore(){
+void API_Processos::salvarInformacoes(std::string nomeDoArquivo){
     
     nlohmann::json j;
 
@@ -279,12 +314,35 @@ void API_Processos::salvarArvore(){
       //Ecluindo o processo Odin(pai de todos)
       if(p.getId()!=0){    
         //Salvar as informações no fim do arquivo json 
-        j.push_back(nlohmann::json{{"ID", p.getId()}, {"Nome", p.getNome()}, {"Pai", p.getPai()},{"Usuário", p.getUsuario()},{"Memória Utilizada", p.getMemoria()},{"Memória em SWAP", p.getMemSwap()}});
+        j.push_back(nlohmann::json{{"ID", p.getId()}, 
+                                   {"Nome", p.getNome()}, 
+                                   {"Quantidade de Filhos", p.getFilhos()->size()},
+                                   {"Usuário", p.getUsuario()},
+                                   {"Pai", p.getPai()},
+                                   {"Memória Utilizada", p.getMemoria()},
+                                   {"Memória de Pico", p.getMemPico()},
+                                   {"Memória de Dados", p.getMemDados()},
+                                   {"Memória de Pilha", p.getMemPilha()},
+                                   {"Memória de Segmento de texto", p.getMemSegText()},
+                                   {"Memória em SWAP", p.getMemSwap()},
+                                   {"Tamanho da entrada da tabela de páginas", p.getTamEntTabPag()}, 
+                                   {"Tamanho da tabela de segundo nível", p.getTamSegTabPag()},
+                                   {"Major Faults", p.getMjfaults()},
+                                   {"Minor Faults", p.getMifaults()},
+                                   {"Quantidade de CPUS permitidas", p.getCpusPermitidas().size()},
+                                   {"Estado", EstadoParaString(p.getEstado())},
+                                   {"Troca de contexto voluntárias", p.getTrocaContVol()},
+                                   {"Troca de contexto forçadas", p.getTrocaContFor()},
+                                   {"Threads", p.getThreads()},
+                                   {"Numero de sinais pendentes", p.getNumSinPend()},
+                                   {"Taxa de Prioridade", p.getPrioridade()},
+                                   {"Tempo de inicio em relação ao boot", p.getTempDeInic()}    
+                                  });
       }
     }
     
     //Escrita do objeto representante no JSON no arquivo JSON
-    std::ofstream o("arvore.json");
+    std::ofstream o((nomeDoArquivo+".json"));
     o << std::setw(4) << j << std::endl;
 }
 
@@ -292,32 +350,33 @@ std::vector<Processo> API_Processos::getProcessos(){
     return this->processos;
 }
 
-std::string API_Processos::obterNomeArqTemp(std::string nomeDoArquivo){
-    
-    std::ifstream obj;
+//================================================================
 
-    int ponto = nomeDoArquivo.find_last_of(".");    
-    std::string nome = nomeDoArquivo.substr(0,ponto);
-    std::string extensao = nomeDoArquivo.substr(ponto,nomeDoArquivo.size()-1);
+    //FALTA IMPLEMENTAR
 
-    bool existeArquivo=true;
+//================================================================
 
-    while(existeArquivo){
+void imprimirSubArvore(Processo processo){
 
-        obj.open((nome + extensao));
-    
-        existeArquivo = obj.is_open();
-
-        if(existeArquivo==true){
-            nome=(nome+"t");
-        }
-
-        obj.close();
-    }
-
-    return (nome+extensao);   
 }
 
-API_Processos::~API_Processos(){
-    remove(arquivoTemp.c_str());
+void imprimirArvore(){
+
+}
+
+Processo& buscarPorNome(){
+
+    return *(new Processo(-1,"erro", -1, -1, (unsigned int)0));
+}
+
+std::vector<Processo> buscarProcsPorUsu(int){
+
+    std::vector<Processo> procDoUsuario;
+
+    return procDoUsuario;
+}
+
+int quantProcNoEstado(ESTADO){
+
+    return 0;
 }

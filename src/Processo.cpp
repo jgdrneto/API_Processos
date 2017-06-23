@@ -220,7 +220,7 @@ std::string Processo::toString(){
           "Minor Faults: " << this->mifaults << "\n"  <<
           "Major Faults: " << this->mjfaults << "\n" <<
           "Quantidade de CPUS permitidas: " << this->cpusPermitidas.size() << "\n" <<
-          "ESTADO: " << this->estado << "\n" <<
+          "ESTADO: " << EstadoParaString(this->estado) << "\n" <<
           "Troca de contexto voluntárias: " << this->trocaContVol << "\n" <<
           "Troca de contexto forçadas: " << this->trocaContFor << "\n" <<
           "Threads: " << this->threads << "\n" <<

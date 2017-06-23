@@ -118,43 +118,80 @@ public:
 	 */
 	virtual ~API_Processos();
 
-	/*  Descrição 			: Imprimir a árvore em pré-ordem 
-     *
-     *  @param Processo& 	: Endereço do processo raiz
-     */
-  	void imprimirArvore(Processo&);
+  /*  Descrição 			: Buscar o processo pelo ID
+ 	 *
+   *  @param string 		: ID do processo que se deseja obter 
+   *
+   *  @return Processo& 	: Processo que se deseja buscar
+   */
+  Processo& buscaPorID(int);
 
-  	/*  Descrição 			: Buscar o processo pelo ID
-   	 *
-     *  @param string 		: ID do processo que se deseja obter 
-     *
-     *  @return Processo& 	: Processo que se deseja buscar
-     */
-  	Processo& buscaPorID(int);
+  /*  Descrição 			: Obter todos os usuários distintos dos processos
+   *
+   *  @return vector<int> : Vetor com todos os usuários distintos do processo
+   */
+  std::vector<int> obterUsuarios();
 
-  	/*  Descrição 			: Obter todos os usuários distintos dos processos
-     *
-     *  @return vector<int> : Vetor com todos os usuários distintos do processo
-     */
-  	std::vector<int> obterUsuarios();
-
-  	/*  Descrição 	: Contar todos os processo de um determindado usuário
-     *
-     *  @param int 	: ID do usuário que se deseja ver a quantidade de procesos
-     *
-     *  @return int : Quantidade de processos de um usuário 
-     */
+  /*  Descrição 	: Contar todos os processo de um determindado usuário
+   *
+   *  @param int 	: ID do usuário que se deseja ver a quantidade de procesos
+   *
+   *  @return int : Quantidade de processos de um usuário 
+   */
 	int quantidadeProcessosDoUsuario(int);
 
-	/*  Descrição : Salvar as informações dos processos em um arquivo JSON
-     */
-  	void salvarArvore();
+	/*  Descrição     : Salvar as informações dos processos em um arquivo JSON
+   *  
+   *  @param string : Nome do arquivo a ser salvo com as informações
+   */
+  void salvarInformacoes(std::string);
 
-  	/*	Descrição 	: Obter o vetor com todos os processos
-  	 *
-  	 *	@return 	: Vetor com todos os processos
-  	 */
-  	std::vector<Processo> getProcessos();
+  /*	Descrição : Obter o vetor com todos os processos
+   *
+   *	@return 	: Vetor com todos os processos
+   */
+  std::vector<Processo> getProcessos();
+
+  //================================================================
+
+    //FALTA IMPLEMENTAR
+
+  //================================================================
+  
+  /*  Descrição         : Imprimir a árvore apartir de um dos processos (impressão semelhante ao pstree)
+   *
+   *  @param Processo&  : Endereço do processo raiz
+   */
+  void imprimirSubArvore(Processo&);
+
+  /*  Descrição         : Imprimir toda a arvore, sem contar o porcesso de id 0 
+   */
+  void imprimirArvore();
+
+  /*  Descrição         : Buscar o processo pelo seu nome 
+   *
+   *  @param string     : Nome do processo que se deseja procurar
+   *
+   *  @return Processo& : Endereço do processo que se desejou buscar;
+   */
+  Processo& buscarPorNome();
+
+  /*  Descrição                : Buscar Processos do usuários
+   *
+   *  @param int               : ID do usuário
+   *
+   *  @return vector<Processo> : Vetor com todos os processos de um determinado usuário
+   */
+  std::vector<Processo> buscarProcsPorUsu(int);
+
+  /*  Descrição     : Obter quantidade de processos em um determinado estado
+   *
+   *  @param ESTADO : Estado que se deseja obter a quantidade de processos
+   *
+   *  @return int   : Inteiro com a quantidade de processos que estão no estado
+   */
+  int quantProcNoEstado(ESTADO);
+
 };
 
 #include "../src/API_Processos.cpp"

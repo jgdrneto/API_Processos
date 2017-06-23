@@ -83,7 +83,7 @@ public:
 
     /*  Descrição                  : Obter os filhos do processo
      *
-     *  @return vector<Processo*>* : Vetor com os endereços dos filhos do processo
+     *  @return vector<Processo*> : Vetor com os endereços dos filhos do processo
      */
     std::vector<Processo*>* getFilhos();
 
