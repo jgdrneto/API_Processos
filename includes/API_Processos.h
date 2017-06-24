@@ -162,7 +162,7 @@ public:
    *
    *  @param Processo&  : Endereço do processo raiz
    */
-  void imprimirSubArvore(Processo&);
+  void imprimirSubArvore(Processo);
 
   /*  Descrição         : Imprimir toda a arvore, sem contar o porcesso de id 0 
    */
@@ -174,7 +174,15 @@ public:
    *
    *  @return Processo& : Endereço do processo que se desejou buscar;
    */
-  Processo& buscarPorNome();
+  Processo& buscarPorNome(std::string);
+
+  /*  Descrição         : Buscar o processo pelo seu nome 
+   *
+   *  @param string     : Nome do processo que se deseja procurar
+   *
+   *  @return Processo& : Endereço do processo que se desejou buscar;
+   */
+  Processo& buscarPorId(int);
 
   /*  Descrição                : Buscar Processos do usuários
    *

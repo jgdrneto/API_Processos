@@ -442,27 +442,63 @@ std::vector<Processo> API_Processos::getProcessos(){
 
 //================================================================
 
-void imprimirSubArvore(Processo processo){
+void API_Processos::imprimirSubArvore(Processo processo){
+    std::stringstream ss;
+
+    ss << "pstree -p " << processo.getId();
+      
+    system(ss.str().c_str());
 
 }
 
-void imprimirArvore(){
-
+void API_Processos::imprimirArvore(){
+    system ("pstree");
 }
 
-Processo& buscarPorNome(){
+Processo& API_Processos::buscarPorNome(std::string nome){
 
-    return *(new Processo(-1,"erro", -1, -1, (unsigned int)0));
+    int cont=0, i;
+    for(Processo p : this->processos){
+        if(p.getNome()==nome){
+            i=cont;
+        }
+        cont++;
+    }
+    return this->processos[i];
 }
 
-std::vector<Processo> buscarProcsPorUsu(int){
+Processo& API_Processos::buscarPorId(int idProc){
 
+    int cont=0, i;
+    for(Processo p : this->processos){
+        if(p.getId()==idProc){
+            i=cont;
+        }
+        cont++;
+    }
+    return this->processos[i];
+}
+
+std::vector<Processo> API_Processos::buscarProcsPorUsu(int user){
+
+    std::vector<int> resultado;
     std::vector<Processo> procDoUsuario;
+
+    for(Processo p : this->processos){
+        if(p.getUsuario()== user){
+            procDoUsuario.push_back(p);
+        }
+    }
 
     return procDoUsuario;
 }
 
-int quantProcNoEstado(ESTADO){
-
-    return 0;
+int API_Processos::quantProcNoEstado(ESTADO estado){
+    int cont=0;
+    for(Processo p : this->processos){
+        if(p.getEstado()==estado){
+            cont++;
+        }
+    }
+    return cont;
 }
