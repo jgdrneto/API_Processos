@@ -27,7 +27,7 @@ private:
     unsigned int tamSegTabPag;               //Tamanho da tabela de página de segundo nível
     unsigned int mjfaults;                   //Quantidade de Major Faults
     unsigned int mifaults;                   //Quantidade de Minor Faults
-    std::vector<unsigned int> cpusPermitidas;//Lista de CPU's que o processo pode executar
+    unsigned int cpusPermitidas;             //Quantidade de CPU's que o processo pode executar
     ESTADO estado;                           //Estado do processo
     unsigned int trocaContVol;               //Quantidade de troca de contexto voluntárias
     unsigned int trocaContFor;               //Quantidade de troca de contexto forçadas
@@ -159,11 +159,11 @@ public:
      */
     unsigned int getMifaults();
 
-    /*  Descrição                    : Obter lista das cpus permitidas para execução do processo
+    /*  Descrição            : Obter lista das cpus permitidas para execução do processo
      *
-     *  @return vector<unsigned int> : Lista de CPU's permitidas
+     *  @return unsigned int : Quantidade de CPU's permitidas
      */
-    std::vector<unsigned int> getCpusPermitidas();
+    unsigned int getCpusPermitidas();
 
     /*  Descrição       : Obter o estado do processo
      *
@@ -301,13 +301,13 @@ public:
      *
      *  @param unsigned int : Nova lista de cpus permitidas
      */ 
-    void setCpusPermitidas(std::vector<unsigned int>);    
+    void setCpusPermitidas(unsigned int);    
 
     /*  Descrição     : Adicionar ESTADO para o processo
      *
      *  @param ESTADO : Novo ESTADO do processo
      */  
-    void setESTADO(ESTADO);
+    void setEstado(ESTADO);
 
     /*  Descrição           : Adicionar quantidade de trocas de contexto voluntárias no processo
      *

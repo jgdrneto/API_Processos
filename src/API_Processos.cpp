@@ -72,9 +72,24 @@ std::map<std::string,std::string> API_Processos::obterAtributosChaveValor(std::v
             lexemas[0] == PAI     ||
             lexemas[0] == USUARIO ||
             lexemas[0] == MEMORIA ||
-            lexemas[0] == MEMSWAP 
+            lexemas[0] == MEMPICO ||
+            lexemas[0] == MEMDATA ||
+            lexemas[0] == MEMPILHA||
+            lexemas[0] == MEMSGTX ||
+            lexemas[0] == MEMSWAP ||
+            lexemas[0] == TAMETPG ||
+            lexemas[0] == TAMSTPG ||
+            lexemas[0] == CPUSPERM|| 
+            lexemas[0] == TRCONTV ||
+            lexemas[0] == TRCONTF ||
+            lexemas[0] == THREADS ||
+            lexemas[0] == SINPEND 
            ){
             atributos[lexemas[0]] = lexemas[1];  
+        }else{
+            if(lexemas[0] == ESTADOB){
+                atributos[lexemas[0]] = lexemas[1]+ " " +lexemas[2];
+            }
         }
     }
 
@@ -97,8 +112,10 @@ std::map<std::string,std::string> API_Processos::obterAtributosValor(std::vector
         lexemas.insert(lexemas.end(),temp.begin(),temp.end());
     }
       
-    atributos[MIFAULTS] = lexemas[9];
-    atributos[MJFAULTS] = lexemas[11];  
+    atributos[MIFAULTS] = lexemas[MIFAULTSNUMBER];
+    atributos[MJFAULTS] = lexemas[MJFAULTSNUMBER];  
+    atributos[PRIORI] = lexemas[PRIORINUMBER];
+    atributos[TEMPINIC] = lexemas[TEMPINICNUMBER];
 
     return atributos;
 }
@@ -177,35 +194,104 @@ std::vector<Processo> API_Processos::construirProcessos(){
         
             Processo* proc = new Processo(std::stoi(p,nullptr,0));
         
-            /*
-            cout << "ID: " << p << endl;
-            cout << "Nome: " << atributos[NAME] << endl;
-            cout << "Pai: " << atributos[PAI] << endl;
-            cout << "Usuário: " << atributos[USUARIO] << endl;
-            cout << "Memória: " << atributos[MEMORIA] << endl;
-            cout << "SWAP: " << atributos[MEMSWAP] << endl;
-            */
-
             if(!atributosStatus[NAME].empty()){
                 proc->setNome(atributosStatus[NAME]);
             }
-            if(!atributosStatus[PAI].empty()){
-                proc->setPai(std::stoi(atributosStatus[PAI],nullptr,0));
-            }
+            
             if(!atributosStatus[USUARIO].empty()){
                 proc->setUsuario(std::stoi(atributosStatus[USUARIO],nullptr,0));
             }
+            
+            if(!atributosStatus[PAI].empty()){
+                proc->setPai(std::stoi(atributosStatus[PAI],nullptr,0));
+            }
+            
             if(!atributosStatus[MEMORIA].empty()){
-                proc->setMemoria((unsigned int)std::stoi(atributosStatus[MEMORIA],nullptr,0));
+                proc->setMemoria((unsigned int)std::strtoul(atributosStatus[MEMORIA].c_str(),nullptr,0));
             }
+            
+            if(!atributosStatus[MEMPICO].empty()){
+                proc->setMemPico((unsigned int)std::strtoul(atributosStatus[MEMPICO].c_str(),nullptr,0));
+            }
+            
+            if(!atributosStatus[MEMDATA].empty()){
+                proc->setMemDados((unsigned int)std::strtoul(atributosStatus[MEMDATA].c_str(),nullptr,0));
+            }
+            
+            if(!atributosStatus[MEMPILHA].empty()){
+                proc->setMemPilha((unsigned int)std::strtoul(atributosStatus[MEMPILHA].c_str(),nullptr,0));
+            }
+            
+            if(!atributosStatus[MEMSGTX].empty()){
+                proc->setMemSegText((unsigned int)std::strtoul(atributosStatus[MEMSGTX].c_str(),nullptr,0));
+            }
+            
             if(!atributosStatus[MEMSWAP].empty()){
-                proc->setMemSwap((unsigned int)std::stoi(atributosStatus[MEMSWAP],nullptr,0));
+                proc->setMemSwap((unsigned int)std::strtoul(atributosStatus[MEMSWAP].c_str(),nullptr,0));
             }
             
-            //Informação de falta de páginas
-            proc->setMifaults((unsigned int)std::stoi(atributosStat[MIFAULTS],nullptr,0));  
-            proc->setMjfaults((unsigned int)std::stoi(atributosStat[MJFAULTS],nullptr,0));
+            if(!atributosStatus[TAMETPG].empty()){
+                proc->setTamEntTabPag((unsigned int)std::strtoul(atributosStatus[TAMETPG].c_str(),nullptr,0));
+            }
             
+            if(!atributosStatus[TAMSTPG].empty()){
+                proc->setTamSegTabPag((unsigned int)std::strtoul(atributosStatus[TAMSTPG].c_str(),nullptr,0));
+            }
+            
+            if(!atributosStat[MIFAULTS].empty()){
+                proc->setMifaults((unsigned int)std::strtoul(atributosStat[MIFAULTS].c_str(),nullptr,0));  
+            }
+            
+            if(!atributosStat[MJFAULTS].empty()){
+                proc->setMjfaults((unsigned int)std::strtoul(atributosStat[MJFAULTS].c_str(),nullptr,0));
+            }    
+            
+            if(!atributosStatus[CPUSPERM].empty()){
+                
+                unsigned int valor=0;
+
+                if(atributosStatus[CPUSPERM].length()==1){
+                    valor = 1;
+                }else{
+                    valor = (unsigned int)(std::strtoul(atributosStatus[CPUSPERM].substr(atributosStatus[CPUSPERM].length()-1).c_str(),nullptr,0));
+                    valor+=1;
+                }
+                   
+                proc->setCpusPermitidas(valor);
+            }
+            
+            if(!atributosStatus[ESTADOB].empty()){
+                proc->setEstado(stringParaEstado(atributosStatus[ESTADOB]));
+            }
+
+            if(!atributosStatus[TRCONTV].empty()){
+                proc->setTrocaContVol((unsigned int)std::strtoul(atributosStatus[TRCONTV].c_str(),nullptr,0));
+            }
+
+            if(!atributosStatus[TRCONTF].empty()){
+                proc->setTrocaContFor((unsigned int)std::strtoul(atributosStatus[TRCONTF].c_str(),nullptr,0));
+            }
+
+            if(!atributosStatus[THREADS].empty()){
+                proc->setThreads((unsigned int)std::strtoul(atributosStatus[THREADS].c_str(),nullptr,0));
+            }
+
+            if(!atributosStatus[SINPEND].empty()){
+                proc->setNumSinPend(std::strtoul(atributosStatus[SINPEND].c_str(),nullptr,0));
+            }
+
+            if(!atributosStatus[SINPEND].empty()){
+                proc->setNumSinPend(std::strtoul(atributosStatus[SINPEND].c_str(),nullptr,0));
+            }
+
+            if(!atributosStat[PRIORI].empty()){
+                proc->setPrioridade(std::stoi(atributosStat[PRIORI].c_str(),nullptr,0));  
+            }
+
+            if(!atributosStat[TEMPINIC].empty()){
+                proc->setTempDeInic(std::strtoull(atributosStat[TEMPINIC].c_str(),nullptr,0));
+            } 
+
             resultado.push_back(*proc);
         }
     }   
@@ -329,7 +415,7 @@ void API_Processos::salvarInformacoes(std::string nomeDoArquivo){
                                    {"Tamanho da tabela de segundo nível", p.getTamSegTabPag()},
                                    {"Major Faults", p.getMjfaults()},
                                    {"Minor Faults", p.getMifaults()},
-                                   {"Quantidade de CPUS permitidas", p.getCpusPermitidas().size()},
+                                   {"Quantidade de CPUS permitidas", p.getCpusPermitidas()},
                                    {"Estado", EstadoParaString(p.getEstado())},
                                    {"Troca de contexto voluntárias", p.getTrocaContVol()},
                                    {"Troca de contexto forçadas", p.getTrocaContFor()},

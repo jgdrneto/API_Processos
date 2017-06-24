@@ -1,6 +1,28 @@
 Processo::Processo(){/*NULO*/}
 
-Processo::Processo(int nId){
+Processo::Processo(int nId):
+nome("nulo"),
+usuario(0),
+pai(0),
+memoria(0),
+memPico(0),
+memDados(0),
+memPilha(0),
+memSegText(0),
+memSwap(0),
+tamEntTabPag(0),
+tamSegTabPag(0),
+mjfaults(0),
+mifaults(0),
+cpusPermitidas(1),
+estado(ESTADO::DEAD),
+trocaContVol(0),
+trocaContFor(0),
+threads(0),
+numSinPend(0),
+prioridade(0),
+tempDeInic(0)
+{
     this->id = nId;
     this->memoria=0;
     this->memSwap = 0;
@@ -8,7 +30,29 @@ Processo::Processo(int nId){
     this->mifaults=0;
 }
 
-Processo::Processo(int nId,std::string nNome, int nUsuario, int nPai, unsigned int nMemoria){
+Processo::Processo(int nId,std::string nNome, int nUsuario, int nPai, unsigned int nMemoria):
+nome("nulo"),
+usuario(0),
+pai(0),
+memoria(0),
+memPico(0),
+memDados(0),
+memPilha(0),
+memSegText(0),
+memSwap(0),
+tamEntTabPag(0),
+tamSegTabPag(0),
+mjfaults(0),
+mifaults(0),
+cpusPermitidas(1),
+estado(ESTADO::DEAD),
+trocaContVol(0),
+trocaContFor(0),
+threads(0),
+numSinPend(0),
+prioridade(0),
+tempDeInic(0)
+{
     this->id = nId;
     this->nome = nNome;
     this->usuario = nUsuario;
@@ -79,7 +123,7 @@ unsigned int Processo::getMifaults() {
     return this->mifaults;
 }
 
-std::vector<unsigned int> Processo::getCpusPermitidas() {
+unsigned int Processo::getCpusPermitidas() {
     return this->cpusPermitidas;
 }
 
@@ -169,11 +213,11 @@ void Processo::setMjfaults(unsigned int nMjfaults){
     this->mjfaults = nMjfaults;
 }
 
-void Processo::setCpusPermitidas(std::vector<unsigned int> nCpusPermitidas){
+void Processo::setCpusPermitidas(unsigned int nCpusPermitidas){
     this->cpusPermitidas = nCpusPermitidas;
 }    
 
-void Processo::setESTADO(ESTADO nEstado){
+void Processo::setEstado(ESTADO nEstado){
     this->estado = nEstado;
 }
 
@@ -219,7 +263,7 @@ std::string Processo::toString(){
           "Tamanho da segunda tabela de páginas: " << this->tamSegTabPag << "\n" <<      
           "Minor Faults: " << this->mifaults << "\n"  <<
           "Major Faults: " << this->mjfaults << "\n" <<
-          "Quantidade de CPUS permitidas: " << this->cpusPermitidas.size() << "\n" <<
+          "Quantidade de CPUS permitidas: " << this->cpusPermitidas << "\n" <<
           "ESTADO: " << EstadoParaString(this->estado) << "\n" <<
           "Troca de contexto voluntárias: " << this->trocaContVol << "\n" <<
           "Troca de contexto forçadas: " << this->trocaContFor << "\n" <<

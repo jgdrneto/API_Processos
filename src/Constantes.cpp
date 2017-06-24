@@ -12,7 +12,6 @@
 #define MEMPICO "VmPeak:"
 #define MEMDATA "VmData:"
 #define MEMPILHA "VmStk:"
-#define MEMPILHA "VmStk:"
 #define MEMSGTX "VmExe:"
 #define MEMSWAP "VmSwap:"
 #define TAMETPG "VmPTE:"
@@ -48,6 +47,35 @@ enum ESTADO
 	ZOMBIE,
 	DEAD
 };
+
+ESTADO stringParaEstado(std::string nomeEstado){
+
+	if(nomeEstado == "R (running)"){
+		return ESTADO::RUNNING;
+	}
+	
+	if(nomeEstado == "S (sleeping)"){
+		return ESTADO::SLEEPING;
+	}
+	
+	if(nomeEstado == "D (disk sleep)"){
+		return ESTADO::DISK_SLEPP;
+	}
+
+	if(nomeEstado == "T (stopped)"){
+		return ESTADO::STOPPED;
+	}
+
+	if(nomeEstado == "T (tracing stop)"){
+		return ESTADO::TRACING_STOP;
+	}
+
+	if(nomeEstado == "Z (zombie)"){
+		return ESTADO::ZOMBIE;
+	}
+
+	return ESTADO::DEAD;
+}
 
 std::string EstadoParaString(ESTADO estado){
 	
